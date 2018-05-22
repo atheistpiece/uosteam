@@ -1,0 +1,109 @@
+while not dead
+  // run everything while you are not dead, no point in running while you are dead.
+  //
+  //  Setup
+  //
+  //bandage timer
+  if not timerexists 'VetBandage'
+    createtimer 'VetBandage'
+    settimer 'VetBandage' 0
+  endif
+  //setup pets
+  if not findalias 'pet1'
+    headmsg 'Select first pet'
+    promptalias 'pet1'
+  endif
+  if not findalias 'pet2'
+    headmsg 'Select second pet'
+    promptalias 'pet2'
+  endif
+  //Get escape runebook
+  if not findalias 'Escape Book'
+    promptalias 'Escape Book'
+  endif
+  //Auto Protection
+  // cast protection as often as we can
+  //
+  if not timerexists 'Protect'
+    createtimer 'Protect'
+    settimer 'Protect' 300000
+  endif
+  if timer 'Protect' >= 300000
+    cast 'Protection'
+    settimer 'Protect' 0
+  endif
+  //
+  //
+  //  Let's heal your pets
+  //
+  // do something only when pets aren't at max health
+  //repeat this shit for pet 2
+  if hits 'pet1' < maxhits 'pet1'
+    if diffhits 'pet1' > diffhits 'pet2'
+      if not @inrange 'pet1' 2 and not @inrange 'pet2' 2
+        headmsg "Get closer"
+        pause 300
+      endif
+      if @inrange 'pet1' 1 and timer 'VetBandage' >= '6300'
+        bandage
+        autotargetobject! 'pet1'
+        settimer 'VetBandage' 0
+        @cleartargetqueue
+      else
+        if @inrange 'pet2' 1 and timer 'VetBandage' >= '6300'
+          bandage
+          autotargetobject! 'pet2'
+          settimer 'VetBandage' 0
+          @cleartargetqueue
+        endif
+      endif
+    endif
+  endif
+  //do it again for pet 2
+  if hits 'pet2' < maxhits 'pet2'
+    if diffhits 'pet1' > diffhits 'pet2'
+      if not @inrange 'pet1' 2 and not @inrange 'pet2' 2
+        headmsg "Get closer"
+        pause 300
+      endif
+      if @inrange 'pet1' 1 and timer 'VetBandage' >= '6300'
+        bandage
+        autotargetobject! 'pet1'
+        settimer 'VetBandage' 0
+        @cleartargetqueue
+      else
+        if @inrange 'pet2' 1 and timer 'VetBandage' >= '6300'
+          bandage
+          autotargetobject! 'pet2'
+          settimer 'VetBandage' 0
+          @cleartargetqueue
+        endif
+      endif
+    endif
+  endif
+  //get closer if too far
+  if not @inrange 'pet1' 2 and not @inrange 'pet2' 2
+    headmsg "Get closer"
+    pause 300
+  endif
+  // emergency recall routine
+  getfriend 'murderer' 'humanoid'
+  if @findobject 'friend'
+    cast "Recall"
+    msg 'all follow me'
+    pause 200
+    msg 'all follow me'
+    pause 50
+    msg 'all follow me'
+    pause 50
+    msg 'all follow me'
+    pause 50
+    msg 'all follow me'
+    waitfortarget 2000
+    target! 'Escape Book'
+    @unsetalias 'friend'
+    stop
+  endif
+  pause 100
+  //There should be nothing below this
+endwhile
