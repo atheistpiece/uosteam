@@ -39,52 +39,11 @@ while not dead
   // do something only when pets aren't at max health
   //repeat this shit for pet 2
   if hits 'pet1' < maxhits 'pet1'
-    if diffhits 'pet1' > diffhits 'pet2'
-      if not @inrange 'pet1' 2 and not @inrange 'pet2' 2
-        headmsg "Get closer"
-        pause 300
-      endif
-      if @inrange 'pet1' 1 and timer 'VetBandage' >= '6300'
-        bandage
-        autotargetobject! 'pet1'
-        settimer 'VetBandage' 0
-        @cleartargetqueue
-      else
-        if @inrange 'pet2' 1 and timer 'VetBandage' >= '6300'
-          bandage
-          autotargetobject! 'pet2'
-          settimer 'VetBandage' 0
-          @cleartargetqueue
-        endif
-      endif
-    endif
+    msg 'pet 1 injured'
   endif
   //do it again for pet 2
   if hits 'pet2' < maxhits 'pet2'
-    if diffhits 'pet1' > diffhits 'pet2'
-      if not @inrange 'pet1' 2 and not @inrange 'pet2' 2
-        headmsg "Get closer"
-        pause 300
-      endif
-      if @inrange 'pet1' 1 and timer 'VetBandage' >= '6300'
-        bandage
-        autotargetobject! 'pet1'
-        settimer 'VetBandage' 0
-        @cleartargetqueue
-      else
-        if @inrange 'pet2' 1 and timer 'VetBandage' >= '6300'
-          bandage
-          autotargetobject! 'pet2'
-          settimer 'VetBandage' 0
-          @cleartargetqueue
-        endif
-      endif
-    endif
-  endif
-  //get closer if too far
-  if not @inrange 'pet1' 2 and not @inrange 'pet2' 2
-    headmsg "Get closer"
-    pause 300
+    msg 'pet 2 injured'
   endif
   // emergency recall routine
   getfriend 'murderer' 'humanoid'
